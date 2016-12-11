@@ -16,6 +16,8 @@ Promise.all([
       speed_element = document.querySelector('#rotate_speed'),
       canvas_width = canvas.canvas_width, canvas_height = canvas.canvas_height;
 
+    canvas.initializeRPS('#rps');
+
     let
       g_MvpMatrix = new Matrix4(),
       [gl] = Canvas.initializeCanvas('#c', canvas_width, canvas_height, 'webgl'),
@@ -25,6 +27,7 @@ Promise.all([
 
     canvas.fps_last = Date.now();
     canvas.rps_last = canvas.fps_last;
+    canvas.requests_count = 0;
 
     let u_MvpMatrix = WebGL.getUniform(gl, shader_program, 'u_MvpMatrix');
     let mvpMatrix = new Matrix4();
@@ -52,6 +55,7 @@ Promise.all([
         return [positions, colors];
       },
       updateCanvas = (closure) => {
+        canvas.requests_count++;
         [positions, colors] = checkAndSplit();
 
         WebGL.initArrayBuffer(gl, shader_program, 'a_Position', new Float32Array(positions), gl.FLOAT, 3);
@@ -70,10 +74,19 @@ Promise.all([
 
         requestAnimationFrame(closure);
       },
+      countRPS = () => {
+        let
+          now = Date.now(),
+          elapsed = now - canvas.rps_last;
+        canvas.rps_element.value = (canvas.requests_count * 1000 / elapsed).toFixed(1);
+        canvas.requests_count = 0;
+        canvas.rps_last = now;
+      },
       closure = () => {
         updateCanvas(closure)
       };
 
+    setInterval(countRPS, 1000);
     closure();
   })
   .catch(e => console.error(e.stack || e));
