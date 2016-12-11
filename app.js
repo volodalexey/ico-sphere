@@ -11,6 +11,7 @@ Promise.all([
     let
       canvas = new Canvas(window.innerWidth, window.innerHeight),
       cur_split = null,
+      fps_element = document.querySelector('#fps'),
       split_element = document.querySelector('#split_count'),
       rotate_element = document.querySelector('#rotate'),
       speed_element = document.querySelector('#rotate_speed'),
@@ -25,8 +26,7 @@ Promise.all([
       currentAngle = 0.0,
       positions, colors;
 
-    canvas.fps_last = Date.now();
-    canvas.rps_last = canvas.fps_last;
+    canvas.rps_last = canvas.fps_last = Date.now();
     canvas.requests_count = 0;
 
     let u_MvpMatrix = WebGL.getUniform(gl, shader_program, 'u_MvpMatrix');
@@ -71,6 +71,13 @@ Promise.all([
         }
         gl.uniformMatrix4fv(u_MvpMatrix, false, g_MvpMatrix.elements);
         WebGL.drawFrame(gl, canvas, positions.length);
+
+        let
+          now = Date.now(),
+          delta = now - canvas.fps_last,
+          delta_per_second = delta / 1000;
+        canvas.fps_last = now;
+        fps_element.value = (1 / delta_per_second).toFixed(1);
 
         requestAnimationFrame(closure);
       },
