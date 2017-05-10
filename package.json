@@ -1,0 +1,23 @@
+{
+  "name": "ico-sphere",
+  "version": "1.0.0",
+  "description": "IcosahedronGeometry",
+  "main": "app.js",
+  "scripts": {
+    "static": "static . -p 8865"
+  },
+  "private": true,
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/volodalexey/ico-sphere.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/volodalexey/ico-sphere/issues"
+  },
+  "homepage": "https://github.com/volodalexey/ico-sphere#readme",
+  "dependencies": {
+    "node-static": "0.7.9"
+  }
+}
