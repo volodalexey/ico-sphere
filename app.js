@@ -50,6 +50,8 @@ Promise.all([
             positions[i + 1] = y;
             positions[i + 2] = z;
           }
+          positions = new Float32Array(positions);
+          colors = new Float32Array(colors);
         }
         return [positions, colors];
       },
@@ -57,8 +59,8 @@ Promise.all([
         stats.begin();
         [positions, colors] = checkAndSplit();
 
-        WebGL.initArrayBuffer(gl, shader_program, 'a_Position', new Float32Array(positions), gl.FLOAT, 3);
-        WebGL.initArrayBuffer(gl, shader_program, 'a_Color', new Float32Array(colors), gl.FLOAT, 3);
+        WebGL.initArrayBuffer(gl, shader_program, 'a_Position', positions, gl.FLOAT, 3);
+        WebGL.initArrayBuffer(gl, shader_program, 'a_Color', colors, gl.FLOAT, 3);
 
         if (rotate_element.checked) {
           g_MvpMatrix.set(mvpMatrix);
