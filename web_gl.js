@@ -140,11 +140,11 @@ class WebGL {
     gl.bufferData(gl.ELEMENT_ARRAY_BUFFER, data, gl.STATIC_DRAW);
   }
 
-  static drawFrame(gl, canvas, length) {
+  static drawFrame(gl, canvas_width, canvas_height, length) {
     gl.clearColor(1, 1, 1, 1);
     gl.enable(gl.DEPTH_TEST);
     gl.clear(gl.COLOR_BUFFER_BIT | gl.DEPTH_BUFFER_BIT);
-    gl.viewport(0, 0, canvas.canvas_width, canvas.canvas_height);
+    gl.viewport(0, 0, canvas_width, canvas_height);
     // gl.drawElements(gl.LINES, length, gl.UNSIGNED_SHORT, 0);
     // gl.drawElements(gl.LINE_STRIP, length, gl.UNSIGNED_SHORT, 0);
     // gl.drawElements(gl.TRIANGLES, length, gl.UNSIGNED_SHORT, 0);

@@ -9,25 +9,24 @@ Promise.all([
   .then(results => {
 
     let
-      canvas = new Canvas(window.innerWidth, window.innerHeight),
+      canvas = new Canvas({ selector: 'canvas', width: window.innerWidth, height: window.innerHeight, strContext: 'webgl' }),
       cur_split = null,
-      fps_element = document.querySelector('#fps'),
       split_element = document.querySelector('#split_count'),
       rotate_element = document.querySelector('#rotate'),
       speed_element = document.querySelector('#rotate_speed'),
-      canvas_width = canvas.canvas_width, canvas_height = canvas.canvas_height;
-
-    canvas.initializeRPS('#rps');
+      canvas_width = canvas.width, canvas_height = canvas.height;
 
     let
       g_MvpMatrix = new Matrix4(),
-      [gl] = Canvas.initializeCanvas('#c', canvas_width, canvas_height, 'webgl'),
+      gl = canvas.context,
       shader_program = WebGL.initWebGL(gl, results[1], results[2]),
       currentAngle = 0.0,
       positions, colors;
 
-    canvas.rps_last = canvas.fps_last = Date.now();
-    canvas.requests_count = 0;
+    let stats = new Stats();
+    stats.setMode(1);
+    stats.showPanel(0);
+    document.body.appendChild( stats.dom );
 
     let u_MvpMatrix = WebGL.getUniform(gl, shader_program, 'u_MvpMatrix');
     let mvpMatrix = new Matrix4();
@@ -55,7 +54,7 @@ Promise.all([
         return [positions, colors];
       },
       updateCanvas = (closure) => {
-        canvas.requests_count++;
+        stats.begin();
         [positions, colors] = checkAndSplit();
 
         WebGL.initArrayBuffer(gl, shader_program, 'a_Position', new Float32Array(positions), gl.FLOAT, 3);
@@ -70,30 +69,15 @@ Promise.all([
           g_MvpMatrix.rotate(currentAngle, 0.0, 0.0, 1.0); // z
         }
         gl.uniformMatrix4fv(u_MvpMatrix, false, g_MvpMatrix.elements);
-        WebGL.drawFrame(gl, canvas, positions.length);
+        WebGL.drawFrame(gl, canvas_width, canvas_height, positions.length);
 
-        let
-          now = Date.now(),
-          delta = now - canvas.fps_last,
-          delta_per_second = delta / 1000;
-        canvas.fps_last = now;
-        fps_element.value = (1 / delta_per_second).toFixed(1);
-
+        stats.end();
         requestAnimationFrame(closure);
-      },
-      countRPS = () => {
-        let
-          now = Date.now(),
-          elapsed = now - canvas.rps_last;
-        canvas.rps_element.value = (canvas.requests_count * 1000 / elapsed).toFixed(1);
-        canvas.requests_count = 0;
-        canvas.rps_last = now;
       },
       closure = () => {
         updateCanvas(closure)
       };
 
-    setInterval(countRPS, 1000);
     closure();
   })
   .catch(e => console.error(e.stack || e));

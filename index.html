@@ -23,9 +23,10 @@
             justify-content: space-around;
         }
     </style>
+    <script src="stats.min.js"></script>
 </head>
 <body class="m-0-p-0">
-    <canvas class="d-block" id="c"></canvas>
+    <canvas class="d-block"></canvas>
     <div class="p-abs-b flex-row-around">
         <label>
             Split count
@@ -38,14 +39,6 @@
         <label>
             Rotate speed
             <input type="number" id="rotate_speed" value="0.1" step="0.05" min="0.01" max="1">
-        </label>
-        <label>
-            Requests per second
-            <input type="text" id="rps" readonly>
-        </label>
-        <label>
-            Frames per second
-            <input type="text" id="fps" readonly>
         </label>
     </div>
     <script type="text/javascript" src="matrix4.js"></script>
