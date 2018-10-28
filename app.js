@@ -32,8 +32,8 @@ Promise.all([
       g_MvpMatrix = new Matrix4(),
       gl = canvas.context,
       shader_program = WebGL.initWebGL(gl, results[1], results[2]),
-      xAngle = 0.0, yAngle = 0.0, zAngle = 0.0,
       positions, colors;
+    let xAngle = 0.0, yAngle = 0.0, zAngle = 0.0;
 
     let stats = new Stats();
     stats.setMode(1);
@@ -62,34 +62,31 @@ Promise.all([
         }
         positions = new Float32Array(positions);
         colors = new Float32Array(colors);
+        WebGL.initArrayBuffer(gl, shader_program, 'a_Position', positions, gl.FLOAT, 3);
+        WebGL.initArrayBuffer(gl, shader_program, 'a_Color', colors, gl.FLOAT, 3);
       }
-      return [positions, colors];
     }
 
     (function updateCanvas() {
       stats.begin();
-      [positions, colors] = checkAndSplit();
 
-      WebGL.initArrayBuffer(gl, shader_program, 'a_Position', positions, gl.FLOAT, 3);
-      WebGL.initArrayBuffer(gl, shader_program, 'a_Color', colors, gl.FLOAT, 3);
+      checkAndSplit();
 
       if (pointer.start) {
         let p = pointer.pointers[0];
         if (p.diffPrevX || p.diffPrevY) {
           if (p.diffPrevY) {
             xAngle = xAngle + p.diffPrevY;
-            xAngle = xAngle % 360;
             p.diffPrevY = 0;
           }
           if (p.diffPrevX) {
             yAngle = yAngle + p.diffPrevX;
-            yAngle = yAngle % 360;
             p.diffPrevX = 0;
           }
           g_MvpMatrix.set(mvpMatrix);
-          g_MvpMatrix.rotate(xAngle, 1.0, 0.0, 0.0);
-          g_MvpMatrix.rotate(yAngle, 0.0, 1.0, 0.0);
-          g_MvpMatrix.rotate(zAngle, 0.0, 0.0, 1.0);
+          if (xAngle || yAngle) {
+            g_MvpMatrix.rotate(Math.sqrt(xAngle * xAngle + yAngle * yAngle), xAngle, yAngle, 0.0);
+          }
         }
       } else if (rotate_element.checked) {
         g_MvpMatrix.set(mvpMatrix);
