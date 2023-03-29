@@ -1,10 +1,11 @@
 {
   "name": "ico-sphere",
   "version": "1.0.0",
-  "description": "IcosahedronGeometry",
+  "description": "Icosahedron on WebGL",
   "main": "app.js",
   "scripts": {
-    "static": "static . -p 8865"
+    "build": "WEBPACK_ENV=production webpack",
+    "serve": "WEBPACK_ENV=development webpack serve"
   },
   "private": true,
   "repository": {
@@ -17,7 +18,17 @@
     "url": "https://github.com/volodalexey/ico-sphere/issues"
   },
   "homepage": "https://github.com/volodalexey/ico-sphere#readme",
-  "dependencies": {
-    "node-static": "0.7.9"
+  "devDependencies": {
+    "copy-webpack-plugin": "^11.0.0",
+    "css-loader": "^6.7.3",
+    "eslint": "^8.37.0",
+    "eslint-config-standard-with-typescript": "^34.0.1",
+    "html-webpack-plugin": "^5.5.0",
+    "mini-css-extract-plugin": "^2.7.5",
+    "ts-loader": "^9.4.2",
+    "typescript": "^5.0.2",
+    "webpack": "^5.76.3",
+    "webpack-cli": "^5.0.1",
+    "webpack-dev-server": "^4.13.1"
   }
 }
