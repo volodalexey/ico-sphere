@@ -38,25 +38,26 @@ export class Canvas {
 
   addListeners (options: ICanvasOptions): void {
     if (typeof options.onPointerDown === 'function') {
-      this.element.addEventListener('pointerdown', options.onPointerDown)
+      window.addEventListener('pointerdown', options.onPointerDown)
     }
     if (typeof options.onPointerMove === 'function') {
-      this.element.addEventListener('pointermove', options.onPointerMove)
+      window.addEventListener('pointermove', options.onPointerMove)
     }
     if (typeof options.onPointerUp === 'function') {
-      this.element.addEventListener('pointerup', options.onPointerUp)
+      window.addEventListener('pointerup', options.onPointerUp)
+      window.addEventListener('pointercancel', options.onPointerUp)
     }
   }
 
   removeListeners (options: ICanvasOptions): void {
     if (typeof options.onPointerDown === 'function') {
-      this.element.removeEventListener('pointerdown', options.onPointerDown)
+      window.removeEventListener('pointerdown', options.onPointerDown)
     }
     if (typeof options.onPointerMove === 'function') {
-      this.element.removeEventListener('pointermove', options.onPointerMove)
+      window.removeEventListener('pointermove', options.onPointerMove)
     }
     if (typeof options.onPointerUp === 'function') {
-      this.element.removeEventListener('pointerup', options.onPointerUp)
+      window.removeEventListener('pointerup', options.onPointerUp)
     }
   }
 }

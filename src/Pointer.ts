@@ -17,7 +17,6 @@ interface IPoint {
 export class Pointer {
   public touchButton = 0
   public points: IPoint[] = []
-  public prevent = true
 
   findPoint (id: number): IPoint | undefined {
     return this.points.find(point => point.id === id)
@@ -32,14 +31,12 @@ export class Pointer {
     if (id != null) {
       index = this.findPointIdx(id)
     }
-    console.log('findAndRemovePoint', index)
     if (index > -1) {
       this.points.splice(index, 1)
     }
   }
 
   onPointerDown = (e: PointerEvent): void => {
-    console.log(e.pointerId, e.pointerType, e.button, e.type)
     this.findAndRemovePoint(e.pointerId)
     if (e.button === 0) {
       this.points.push({
@@ -61,7 +58,6 @@ export class Pointer {
   }
 
   onPointerMove = (e: PointerEvent): void => {
-    console.log(e.pointerId, e.pointerType, e.button, e.type)
     const pointer = this.findPoint(e.pointerId)
     if (pointer != null) {
       pointer.prevX = pointer.curX
@@ -76,7 +72,6 @@ export class Pointer {
   }
 
   onPointerUp = (e: PointerEvent): void => {
-    console.log(e.pointerId, e.pointerType, e.button, e.type)
     this.findAndRemovePoint(e.pointerId)
   }
 }

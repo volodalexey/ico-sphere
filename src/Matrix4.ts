@@ -1,7 +1,12 @@
 export class Matrix4 {
   public elements!: Float32Array
   constructor () {
-    this.elements = new Float32Array([1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1])
+    this.elements = new Float32Array([
+      1, 0, 0, 0,
+      0, 1, 0, 0,
+      0, 0, 1, 0,
+      0, 0, 0, 1
+    ])
   }
 
   setRotate (angle: number, x: number, y: number, z: number): Matrix4 {

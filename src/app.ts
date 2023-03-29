@@ -1,3 +1,4 @@
+import './styles.css'
 import { Loader } from './Loader'
 import { Pointer } from './Pointer'
 import { Canvas } from './Canvas'
@@ -87,15 +88,17 @@ async function loadAndRun (): Promise<void> {
     if (pointer.points.length > 0) {
       const p = pointer.points[0]
       if (p.diffPrevX > 0 || p.diffPrevY > 0) {
-        if (p.diffPrevY > 0) {
-          xAngle = xAngle + p.diffPrevY
-          p.diffPrevY = 0
-        }
         if (p.diffPrevX > 0) {
-          yAngle = yAngle + p.diffPrevX
+          xAngle = xAngle + p.diffPrevX * parseFloat(speedElement.value)
           p.diffPrevX = 0
         }
+        if (p.diffPrevY > 0) {
+          yAngle = yAngle + p.diffPrevY * parseFloat(speedElement.value)
+          p.diffPrevY = 0
+        }
         gMvpMatrix.set(mvpMatrix)
+        // gMvpMatrix.rotate(xAngle, 1, 0, 0)
+        // gMvpMatrix.rotate(yAngle, 0, 1, 0)
         if (xAngle > 0 || yAngle > 0) {
           gMvpMatrix.rotate(Math.hypot(xAngle, yAngle), xAngle, yAngle, 0.0)
         }
