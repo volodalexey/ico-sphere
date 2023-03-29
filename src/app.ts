@@ -14,8 +14,8 @@ if (ellipsis != null) {
 let curSplit = ''
 async function loadAndRun (): Promise<void> {
   const [vertexShaderSource, fragmentShaderSource] = await Promise.all([
-    Loader.getText('/shaders/ico_sphere.vert'),
-    Loader.getText('/shaders/ico_sphere.frag')
+    Loader.getText('./shaders/ico_sphere.vert'),
+    Loader.getText('./shaders/ico_sphere.frag')
   ])
   const pointer = new Pointer()
   const canvas = new Canvas({
